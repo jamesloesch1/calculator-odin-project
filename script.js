@@ -21,14 +21,14 @@ const divide = function(a, b) {
     return a / b;
 }; 
 
-const operate = function(op, numA, numB) {
-    if (op === "add") {
+const operate = function(numA, op, numB) {
+    if (op === "+") {
         return add(numA, numB);
-    } else if (op === "subtract") {
+    } else if (op === "-") {
         return subtract(numA, numB);
-    } else if (op === "multiply") {
+    } else if (op === "X") {
         return multiply(numA, numB);
-    } else if (op === "divide") {
+    } else if (op === "/") {
         return divide(numA, numB);
     } else {
         return "Not a supported operation";
@@ -42,15 +42,24 @@ let displayValue;
 
 const output = document.querySelector('#output');
 
+const operators = document.querySelectorAll('.operator');
 const numbers = document.querySelectorAll('.number');
+
+operators.forEach(operator => {
+    operator.addEventListener('click', (e) => {
+        operator = e.target.textContent;
+        console.log(operator);
+        output.textContent = '';
+    }); 
+});
 
 numbers.forEach(number => {
     number.addEventListener('click', (e) => {
-        if (operator === '') {
+        if (operator === undefined) {
             displayValue = Number(output.textContent += e.target.textContent);
             firstNumber = displayValue;
             console.log(firstNumber);
-        } else {
+        } else if (operator === typeof 'string') {
             displayValue = Number(output.textContent += e.target.textContent);
             secondNumber = displayValue;
             console.log(secondNumber);
@@ -58,41 +67,18 @@ numbers.forEach(number => {
     }); 
 })
 
-const addButton = document.querySelector('.operator.add');
-const subtractButton = document.querySelector('.operator.subtract');
-const multiplyButton = document.querySelector('.operator.multiply');
-const divideButton = document.querySelector('.operator.divide');
-const equalsButton = document.querySelector('.operator.equals');
-const clearButton = document.querySelector('.operator.clear');
 
+const equalsButton = document.querySelector('.equals');
+const clearButton = document.querySelector('.clear');
 
 clearButton.addEventListener('click', () => {
     output.textContent = '';
 });
 
-addButton.addEventListener('click', () => {
-    operator = "add";
-    Number(output.textContent = '');
-});
-
-subtractButton.addEventListener('click', () => {
-    operator = "subtract";
-    Number(output.textContent = '');
-});
-
-multiplyButton.addEventListener('click', () => {
-    operator = "multiply";
-    Number(output.textContent = '');
-});
-
-divideButton.addEventListener('click', () => {
-    operator = "divide";
-    Number(output.textContent = '');
-});
-
 equalsButton.addEventListener('click', () => {
-    operate(operator, firstNumber, secondNumber);
-    console.log(operate);
+    console.log(firstNumber);
+    console.log(secondNumber);
+    console.log(operator);
 });
 
 
