@@ -37,7 +37,7 @@ const operate = function(numA, op, numB) {
 
 let firstNumber;
 let secondNumber;
-let operator; 
+let operatorChoice;
 let displayValue;
 
 const output = document.querySelector('#output');
@@ -47,38 +47,38 @@ const numbers = document.querySelectorAll('.number');
 
 operators.forEach(operator => {
     operator.addEventListener('click', (e) => {
-        operator = e.target.textContent;
-        console.log(operator);
+        operatorChoice = e.target.textContent;
+        console.log(operatorChoice);
         output.textContent = '';
     }); 
 });
 
 numbers.forEach(number => {
     number.addEventListener('click', (e) => {
-        if (operator === undefined) {
+        if (operatorChoice === undefined) {
             displayValue = Number(output.textContent += e.target.textContent);
             firstNumber = displayValue;
             console.log(firstNumber);
-        } else if (operator === typeof 'string') {
+        } else if (operatorChoice !== undefined) {
             displayValue = Number(output.textContent += e.target.textContent);
             secondNumber = displayValue;
             console.log(secondNumber);
         };
     }); 
-})
-
+});
 
 const equalsButton = document.querySelector('.equals');
 const clearButton = document.querySelector('.clear');
 
 clearButton.addEventListener('click', () => {
+    firstNumber = '';
+    secondNumber = ''
+    operatorChoice = undefined;
     output.textContent = '';
 });
 
 equalsButton.addEventListener('click', () => {
-    console.log(firstNumber);
-    console.log(secondNumber);
-    console.log(operator);
+    output.textContent = operate(firstNumber, operatorChoice, secondNumber);
 });
 
 
