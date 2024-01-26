@@ -5,80 +5,68 @@
 // 2. Be able to handle a standard operation, which will consist of a number, operator, and another number (i.e., 4 + 6)
 // 3. Output the result of a standard operation 
 
-const add = function(a, b) {
-    return a + b;
-};
-
-const subtract = function(a, b) {
-    return a - b;
-};
-
-const multiply = function(a, b) {
-    return a * b;
-};
-
-const divide = function(a, b) {
-    return a / b;
-}; 
-
-const operate = function(numA, op, numB) {
-    if (op === "+") {
-        return add(numA, numB);
-    } else if (op === "-") {
-        return subtract(numA, numB);
-    } else if (op === "X") {
-        return multiply(numA, numB);
-    } else if (op === "/") {
-        return divide(numA, numB);
-    } else {
-        return "Not a supported operation";
-    };
-};
-
-let firstNumber;
-let secondNumber;
-let operatorChoice;
-let displayValue;
-
-const output = document.querySelector('#output');
-
-const operators = document.querySelectorAll('.operator');
-const numbers = document.querySelectorAll('.number');
-
-operators.forEach(operator => {
-    operator.addEventListener('click', (e) => {
-        operatorChoice = e.target.textContent;
-        console.log(operatorChoice);
-        output.textContent = '';
-    }); 
-});
-
-numbers.forEach(number => {
-    number.addEventListener('click', (e) => {
-        if (operatorChoice === undefined) {
-            displayValue = Number(output.textContent += e.target.textContent);
-            firstNumber = displayValue;
-            console.log(firstNumber);
-        } else if (operatorChoice !== undefined) {
-            displayValue = Number(output.textContent += e.target.textContent);
-            secondNumber = displayValue;
-            console.log(secondNumber);
-        };
-    }); 
-});
-
 const equalsButton = document.querySelector('.equals');
 const clearButton = document.querySelector('.clear');
+const output = document.querySelector('#output');
+const operators = document.querySelectorAll('.operator');
+const numbers = document.querySelectorAll('.number');
+let currentState = '';
+let previousState = '';
+let operationState = undefined;
 
-clearButton.addEventListener('click', () => {
-    firstNumber = '';
-    secondNumber = ''
-    operatorChoice = undefined;
-    output.textContent = '';
-});
+const calculate = function() {
+    let previous = Number(previousState); // 0
+    let current = Number(currentState); // 0
+    let result; 
 
-equalsButton.addEventListener('click', () => {
-    output.textContent = operate(firstNumber, operatorChoice, secondNumber);
-});
+    if (operationState === '+') {
+        return result = previous + current;
+    } else if (operationState === '-') {
+        result = previous - current;
+    } else if (operationState === 'X') {
+        result = previous * current;
+    } else if (operationState === '/') {
+        result = previous / current;
+    }
 
+    currentState = result;
+    previousState = '';
+    operationState = undefined;
+}; 
 
+const updateDisplay = function() {
+
+    operators.forEach(operator => {
+        operator.addEventListener('click', (e) => {
+            output.textContent = '';
+            operationState = e.target.textContent;
+            currentState = output.textContent;
+        }); 
+    });
+
+    numbers.forEach(number => {
+        number.addEventListener('click', (e) => {
+            if (operationState === undefined) {
+                output.textContent += e.target.textContent;
+                previousState = Number(output.textContent);
+                console.log(previousState);
+            } else if (operationState !== undefined) {
+                output.textContent = e.target.textContent;
+                currentState += Number(output.textContent);
+                console.log(currentState);
+            }
+        });
+    });
+
+    equalsButton.addEventListener('click', () => {
+        output.textContent = calculate();
+        console.log(calculate());
+    });
+
+    clearButton.addEventListener('click', () => {
+        output.textContent = '';
+    })
+
+}
+
+updateDisplay();
