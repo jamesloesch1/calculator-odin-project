@@ -10,38 +10,38 @@ const clearButton = document.querySelector('.clear');
 const output = document.querySelector('#output');
 const operators = document.querySelectorAll('.operator');
 const numbers = document.querySelectorAll('.number');
-let currentState = '';
-let previousState = '';
-let operationState = '';
+let firstNumber = '';
+let secondNumber = ''; 
+let operatorChoice = '';
 let result;
 
 const calculate = function() {
-    let previous = Number(previousState); // 0
-    let current = Number(currentState); // 0
+    let first = Number(firstNumber); // 0
+    let second = Number(secondNumber); // 0
 
-    if (operationState === '+') {
-        result = current + previous;
-        currentState = result;
-        previousState = '';
-        operationState = '';
+    if (operatorChoice === '+') {
+        result = first + second;
+        firstNumber = result;
+        secondNumber = '';
+        operatorChoice = '';
         return result;
-    } else if (operationState === '-') {
-        result = current - previous;
-        currentState = result;
-        previousState = '';
-        operationState = '';
+    } else if (operatorChoice === '-') {
+        result = first - second;
+        firstNumber = result;
+        secondNumber = '';
+        operatorChoice = '';
         return result;
-    } else if (operationState === 'X') {
-        result = current * previous;
-        currentState = result;
-        previousState = '';
-        operationState = '';
+    } else if (operatorChoice === 'X') {
+        result = first * second;
+        firstNumber = result;
+        secondNumber = '';
+        operatorChoice = '';
         return result;
-    } else if (operationState === '/') {
-        result = current / previous;
-        currentState = result;
-        previousState = '';
-        operationState = '';
+    } else if (operatorChoice === '/') {
+        result = first / second;
+        firstNumber = result;
+        secondNumber = '';
+        operatorChoice = '';
         return result;
     }
 
@@ -51,30 +51,25 @@ const updateDisplay = function() {
 
     operators.forEach(operator => {
         operator.addEventListener('click', (e) => {
-            if (previousState !== '' && currentState !== '') {
+            if (firstNumber !== '' && secondNumber === '') {
                 output.textContent = '';
+                operatorChoice = e.target.textContent; 
+            } else if (firstNumber !== '' && secondNumber !== '') {
                 output.textContent = calculate();
-            } else if (previousState !== '' && currentState === '') {
-                output.textContent = '';
-                operationState = e.target.textContent;
-            } else if (previousState === '' && currentState !== '') {
-                output.textContent = '';
-                operationState = e.target.textContent;
+                operatorChoice = e.target.textContent; 
             }
         }); 
     });
 
     numbers.forEach(number => {
         number.addEventListener('click', (e) => {
-            if (operationState === '') {
-                output.textContent += e.target.textContent;
-                previousState = Number(output.textContent);
-            } else if (previousState !== '' && operationState !== '') {
-                output.textContent += e.target.textContent;
-                currentState = Number(output.textContent); 
-            } else if (currentState !== '' && operationState !== '') {
-                output.textContent += e.target.textContent;
-                previousState = Number(output.textContent); 
+            if (operatorChoice === '') {
+                output.textContent += Number(e.target.textContent);
+                firstNumber = output.textContent; 
+            } else if (operatorChoice !== '' && firstNumber !== '') {
+                output.textContent = ''
+                output.textContent += Number(e.target.textContent);
+                secondNumber = output.textContent; 
             }
         });
     });
@@ -85,9 +80,9 @@ const updateDisplay = function() {
 
     clearButton.addEventListener('click', () => {
         output.textContent = '';
-        currentState = '';
-        previousState = '';
-        operationState = '';
+        firstNumber = '';
+        secondNumber = '';
+        operatorChoice = '';
     });
 
 };
