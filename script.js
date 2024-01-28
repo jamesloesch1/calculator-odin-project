@@ -12,26 +12,39 @@ const operators = document.querySelectorAll('.operator');
 const numbers = document.querySelectorAll('.number');
 let currentState = '';
 let previousState = '';
-let operationState;
+let operationState = '';
+let result;
 
 const calculate = function() {
     let previous = Number(previousState); // 0
     let current = Number(currentState); // 0
-    let result; 
 
     if (operationState === '+') {
-        return result = previous + current;
+        result = current + previous;
+        currentState = result;
+        previousState = '';
+        operationState = '';
+        return result;
     } else if (operationState === '-') {
-        return result = previous - current;
+        result = current - previous;
+        currentState = result;
+        previousState = '';
+        operationState = '';
+        return result;
     } else if (operationState === 'X') {
-        return result = previous * current;
+        result = current * previous;
+        currentState = result;
+        previousState = '';
+        operationState = '';
+        return result;
     } else if (operationState === '/') {
-       return result = previous / current;
+        result = current / previous;
+        currentState = result;
+        previousState = '';
+        operationState = '';
+        return result;
     }
 
-    currentState = result;
-    previousState = '';
-    operationState = '';
 }; 
 
 const updateDisplay = function() {
@@ -40,9 +53,11 @@ const updateDisplay = function() {
         operator.addEventListener('click', (e) => {
             if (previousState !== '' && currentState !== '') {
                 output.textContent = '';
-                operationState = e.target.textContent;
                 output.textContent = calculate();
-            } else {
+            } else if (previousState !== '' && currentState === '') {
+                output.textContent = '';
+                operationState = e.target.textContent;
+            } else if (previousState === '' && currentState !== '') {
                 output.textContent = '';
                 operationState = e.target.textContent;
             }
@@ -51,33 +66,30 @@ const updateDisplay = function() {
 
     numbers.forEach(number => {
         number.addEventListener('click', (e) => {
-            if (operationState === undefined) {
+            if (operationState === '') {
                 output.textContent += e.target.textContent;
                 previousState = Number(output.textContent);
-                console.log(previousState);
-            } else if (operationState !== undefined && currentState === '') {
+            } else if (previousState !== '' && operationState !== '') {
                 output.textContent += e.target.textContent;
-                currentState = Number(output.textContent);
-                console.log(currentState);
-            } else if (operationState !== undefined && currentState !== '') {
+                currentState = Number(output.textContent); 
+            } else if (currentState !== '' && operationState !== '') {
                 output.textContent += e.target.textContent;
-                previousState = Number(output.textContent);
-                console.log(previousState);
+                previousState = Number(output.textContent); 
             }
         });
     });
 
     equalsButton.addEventListener('click', () => {
         output.textContent = calculate();
-        console.log(calculate());
-        console.log(currentState + ' current');
     });
 
     clearButton.addEventListener('click', () => {
         output.textContent = '';
         currentState = '';
-    })
+        previousState = '';
+        operationState = '';
+    });
 
-}
+};
 
 updateDisplay();
