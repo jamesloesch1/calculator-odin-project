@@ -52,12 +52,12 @@ const updateDisplay = function() {
     operators.forEach(operator => {
         operator.addEventListener('click', (e) => {
             if (firstNumber !== '' && secondNumber === '') {
-                output.textContent = '';
                 operatorChoice = e.target.textContent; 
             } else if (firstNumber !== '' && secondNumber !== '') {
                 output.textContent = calculate();
                 operatorChoice = e.target.textContent; 
             }
+            output.textContent = '';
         }); 
     });
 
@@ -67,7 +67,6 @@ const updateDisplay = function() {
                 output.textContent += Number(e.target.textContent);
                 firstNumber = output.textContent; 
             } else if (operatorChoice !== '' && firstNumber !== '') {
-                output.textContent = ''
                 output.textContent += Number(e.target.textContent);
                 secondNumber = output.textContent; 
             }
@@ -88,3 +87,4 @@ const updateDisplay = function() {
 };
 
 updateDisplay();
+
